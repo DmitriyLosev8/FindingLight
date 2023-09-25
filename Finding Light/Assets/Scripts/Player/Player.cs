@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
 
+[RequireComponent(typeof(LightContainer))]
 public class Player : MonoBehaviour
 {
     [SerializeField] private float _health;
@@ -16,8 +17,9 @@ public class Player : MonoBehaviour
 
     private Light _spotLight;
     private float _positionYToSelfDesttoy = -30f;
-    private float _oxygenLosingDamage = 0.005f; //0.0010f;
-    private float _healthLosingDamage = 0.002f; //0.0006f;
+    private float _oxygenLosingDamage; 
+    private float _healthLosingDamage; 
+    private LightContainer _lightContainer;
 
     public bool IsHaveKey { get; private set; }
     public int DefaultValueOfCurrentKeyId = 100;
@@ -35,6 +37,12 @@ public class Player : MonoBehaviour
     private void Start()
     {
         _spotLight = _laternSpotLight.GetComponent<Light>();
+        SetEternalDamage();
+    }
+
+    private void Awake()
+    {
+        _lightContainer = GetComponent<LightContainer>();
     }
 
     private void Update()
@@ -43,12 +51,34 @@ public class Player : MonoBehaviour
             Die();
 
         TryToCollectOrb();
+        EternalDamagePerTime();   
+    }
 
-        EternalDamagePerTime();
+    private void SetEternalDamage()
+    {
+        float lowOxygenDamage = 0.2f;
+        float lowHealthDamage = 0.05f; ;
+        float middleOxygenDamage = 0.4f;
+        float middleHealthDamage = 0.1f; ;
+        float hightOxygenDamage = 0.7f;
+        float hightHealthDamage = 0.2f; ;
 
-        if (IsHaveKey)
+        if (Level == 1)
         {
-            Debug.Log(CurrentKeyID);
+            _oxygenLosingDamage = lowOxygenDamage;
+            _healthLosingDamage = lowHealthDamage;
+        }
+
+        if (Level == 3)
+        {
+            _oxygenLosingDamage = middleOxygenDamage;
+            _healthLosingDamage = middleHealthDamage;
+        }
+
+        if (Level == 6)
+        {
+            _oxygenLosingDamage = hightOxygenDamage;
+            _healthLosingDamage = hightHealthDamage;
         }
     }
 
@@ -92,7 +122,7 @@ public class Player : MonoBehaviour
 
     }
 
-    public void TakeLightDamage(int lightDamage)
+    public void TakeLightDamage(float lightDamage)
     {
         if(_spotLight.spotAngle > 0)
             _spotLight.spotAngle -= lightDamage;
@@ -109,22 +139,33 @@ public class Player : MonoBehaviour
         }  
     }
 
-    public void TakeLight(int valueOfLight)
+    public void TakeLight(float valueOfLight)
     {
         int maxValueOfLigth = 50;
 
         if (_spotLight.spotAngle < maxValueOfLigth)
             _spotLight.spotAngle += valueOfLight;
+
+        CollectLightOrb();
+    }
+
+    private void CollectLightOrb()
+    {
+        int lightOrb = 1;
+        _lightContainer.ApplyLights(lightOrb);
     }
 
     private void PickUpKey(Key key)
     {
-         key.transform.position = _keySpace.position;
-         key.transform.rotation = _keySpace.rotation;
-         key.transform.SetParent(_keySpace);
-         IsHaveKey = true;
-         CurrentKeyID = key.Id;
-         EnableArrow();
+        if (!IsHaveKey)
+        {
+            key.transform.position = _keySpace.position;
+            key.transform.rotation = _keySpace.rotation;
+            key.transform.SetParent(_keySpace);
+            IsHaveKey = true;
+            CurrentKeyID = key.Id;
+            EnableArrow();
+        } 
     }
 
     private void OnTriggerEnter(Collider other)
@@ -155,22 +196,25 @@ public class Player : MonoBehaviour
     }
 
     private void EternalDamagePerTime()
-    {
-        if (_oxygen <= 0)
-            SlowlyDie();
-        else
-            OxygenLosing();
+    {       
+        if(Time.timeScale == 1)
+        {
+            if (_oxygen <= 0)
+                SlowlyDie();
+            else
+                OxygenLosing();
+        }         
     }
 
     private void SlowlyDie()
     {
-        _health -= _healthLosingDamage;
+        _health -= _healthLosingDamage * Time.deltaTime;
         HealthChanged?.Invoke(_health);
     }
 
     private void OxygenLosing()
     {
-        _oxygen -= _oxygenLosingDamage;
+        _oxygen -= _oxygenLosingDamage * Time.deltaTime;
         OxygenChanged?.Invoke(_oxygen);
     }
 

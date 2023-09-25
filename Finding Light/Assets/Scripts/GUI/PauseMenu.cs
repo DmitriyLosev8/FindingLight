@@ -1,29 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] private GameObject _pausePanel;
     [SerializeField] private GameObject _joyStick;
-
-   // private PlayerInput _playerInput;
+    [SerializeField] AudioSource _music;
 
     public static UnityAction LoadMainMenuButtonClicked;
+    public static UnityAction Unpaused;
+
     public static bool IsPaused;
 
     private void Start()
     {
         _pausePanel.SetActive(false);
     }
-
-    //private void Awake()
-    //{
-    //    _playerInput = new PlayerInput();
-    //    _playerInput.Enable();
-    //    _playerInput.UI.PauseButton.performed += ctx => PauseGame();
-    //}
 
     public void PauseGame()
     {
@@ -32,6 +28,7 @@ public class PauseMenu : MonoBehaviour
             _pausePanel.SetActive(true);
             _joyStick.SetActive(false);  
             IsPaused = true;
+            _music.Pause();
             Time.timeScale = 0;
         }
     }
@@ -42,6 +39,7 @@ public class PauseMenu : MonoBehaviour
         _joyStick.SetActive(true);
         IsPaused = false;
         Time.timeScale = 1;
+        Unpaused?.Invoke();
     }
 
     public void OnLoadMainMenuButtonClicked()

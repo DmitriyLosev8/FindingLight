@@ -1289,7 +1289,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4755655913277224799}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 33beedc61968a85479f32ae8618b5933, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 30c73679cb4721f428d27383171221f6, type: 3}
   m_Controller: {fileID: 9100000, guid: d7e1b57032f4980458f2909034f89f95, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -1345,6 +1345,8 @@ MonoBehaviour:
   _speed: 8
   _rotationSensetivity: 15
   _animator: {fileID: 4755655913267692791}
+  _latern: {fileID: 0}
+  _playersSounds: {fileID: 0}
 --- !u!114 &4755655913277125010
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1360,6 +1362,12 @@ MonoBehaviour:
   _health: 100
   _oxygen: 100
   _effectOfDying: {fileID: 0}
+  _raycastStartPoint: {fileID: 0}
+  _laternSpotLight: {fileID: 0}
+  _keySpace: {fileID: 0}
+  _arrow: {fileID: 0}
+  DefaultValueOfCurrentKeyId: 100
+  CurrentKeyID: 0
 --- !u!1 &4755655913277224817
 GameObject:
   m_ObjectHideFlags: 0

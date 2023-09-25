@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] int _healthDamage;
-    [SerializeField] int _oxygenDamage;
-    [SerializeField] int _lightDamage;
+    [SerializeField] private bool _isScullPanelEnemy;
+
+    private float _healthDamage;
+    private float _oxygenDamage;
+    private float _lightDamage;
 
     private int _sendingDamage;
 
@@ -15,10 +18,17 @@ public class Enemy : MonoBehaviour
         ChoseRandomDamage();
     }
 
+    private void Update()
+    {
+        SetValueOfDamage();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Player player))
         {
+           // SetValueOfDamage(player.Level);
+
             switch (_sendingDamage)
             {
                 case 0:
@@ -38,5 +48,41 @@ public class Enemy : MonoBehaviour
     {
         int countOfDamages = 3;
         _sendingDamage = Random.Range(0, countOfDamages);
+    }
+
+    private void SetValueOfDamage()
+    {
+        int lowDamage = 3;
+        int middleDamage = 5;
+        int highDamage = 8;
+        int scullPanelDamage = 150;
+           
+        if (SceneManager.GetActiveScene().buildIndex == 1)
+        {
+            _healthDamage = lowDamage;
+            _oxygenDamage = lowDamage;
+            _lightDamage = lowDamage;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 3)
+        {
+            _healthDamage = middleDamage;
+            _oxygenDamage = middleDamage;
+            _lightDamage = middleDamage;
+        }
+
+        if (SceneManager.GetActiveScene().buildIndex == 6)
+        {
+            _healthDamage = highDamage;
+            _oxygenDamage = highDamage;
+            _lightDamage = highDamage;
+        }
+
+        if (_isScullPanelEnemy)
+        {
+            _healthDamage = scullPanelDamage;
+            _oxygenDamage = scullPanelDamage;
+            _lightDamage = scullPanelDamage;
+        }
     }
 }

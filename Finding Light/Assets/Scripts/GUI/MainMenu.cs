@@ -5,18 +5,16 @@ using UnityEngine.Events;
 
 public class MainMenu : MonoBehaviour
 {
-    private PlayerInput _playerInput;
+    //private PlayerInput _playerInput;
 
     public static event UnityAction PlayButtonClicked;
-    public static event UnityAction ExitButtonClicked;
+    [SerializeField] private GameObject _levelsPanel;
+
 
     public void OnPlayButtonClicked()
     {
-        PlayButtonClicked?.Invoke();    
-    }
+        _levelsPanel.SetActive(true);
 
-    public void OnExitButtonClicked()
-    {
-        ExitButtonClicked?.Invoke();
+        // PlayButtonClicked?.Invoke();
     }
 }

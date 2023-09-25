@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class GUISystem : MonoBehaviour
 {
@@ -10,59 +11,71 @@ public class GUISystem : MonoBehaviour
     [SerializeField] private Slider _health;
     [SerializeField] private Slider _oxygen;
     [SerializeField] private List<IconOfDoor> _iconsOfDoor;
-    [SerializeField] private TMP_Text _greetings;
-
-    private float _timeOfGreetings = 10;
+    [SerializeField] private AudioSource _music;
+    [SerializeField] private Toggle _musicToggle;
+    [SerializeField] private TMP_Text _lightsCount;
+    [SerializeField] private LightContainer _lightContainer;
+    [SerializeField] private TMP_Text _levels;
 
     private void Start()
     {
         _health.value = _player.Health;
         _oxygen.value = _player.Oxygen;
+        _lightsCount.text = _lightContainer.Lights.ToString();
+       // _lightsCount.text = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Light_Orb).ToString();
     }
 
     private void Update()
     {
-        GreetingsWork();
+        _health.value = _player.Health;
+        _levels.text = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Level_Number).ToString();
     }
 
     private void OnEnable()
     {
-        _player.HealthChanged += OnHealthChanged;
+        // _player.HealthChanged += OnHealthChanged;
+        LightContainer.LightChanged += OnLightChanged;
         _player.OxygenChanged += OnOxygenChanged;
-        Door.Opened += OnDoorOpened;
+        PauseMenu.Unpaused += OnUnpaused;
+        _musicToggle.onValueChanged.AddListener(TurnSound);
     }
+
+   
 
     private void OnDisable()
     {
-        _player.HealthChanged -= OnHealthChanged;
+        // _player.HealthChanged -= OnHealthChanged;
+        LightContainer.LightChanged -= OnLightChanged;
         _player.OxygenChanged -= OnOxygenChanged;
-        Door.Opened -= OnDoorOpened;
+        PauseMenu.Unpaused -= OnUnpaused;
+        _musicToggle.onValueChanged.RemoveListener(TurnSound);
     }
 
-    private void OnHealthChanged(float health)
+    //private void OnHealthChanged(float health)
+    //{
+    //    _health.value = health;
+    //}
+
+    private void OnLightChanged(int lightsOrbs)
     {
-        _health.value = _player.Health;
+        _lightsCount.text = lightsOrbs.ToString();
     }
 
     private void OnOxygenChanged(float oxygen)
     {
-        _oxygen.value = _player.Oxygen;
+        _oxygen.value = oxygen;
     }
 
-    private void OnDoorOpened(int id)
+    private void OnUnpaused()
     {
-        for(int i = 0; i < _iconsOfDoor.Count; i++)
-        {
-            if(id == i)
-                _iconsOfDoor[i].StartOpenedAnimation();
-        }
+        _music.UnPause();
     }
 
-    private void GreetingsWork()
+    public void TurnSound(bool isOn)
     {
-        _timeOfGreetings -= Time.deltaTime;
-
-        if (_timeOfGreetings <= 0)
-            _greetings.enabled = false;
+        if (isOn)
+            _music.Play();
+        else
+            _music.Stop();
     }
 }

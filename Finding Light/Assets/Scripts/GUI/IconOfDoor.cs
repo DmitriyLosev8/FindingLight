@@ -7,6 +7,8 @@ public class IconOfDoor : MonoBehaviour
 {
     private const string CanBecomeGreen = "CanBecomeGreen";
 
+    [SerializeField] private int _id;
+
     private Animator _animator;
 
     private void Start()
@@ -14,8 +16,18 @@ public class IconOfDoor : MonoBehaviour
         _animator = GetComponent<Animator>();
     }
 
-    public void StartOpenedAnimation()
+    private void OnEnable()
     {
-        _animator.SetBool(CanBecomeGreen, true);
+        Door.Opened += StartOpenedAnimation;
     }
+    private void OnDisable()
+    {
+        Door.Opened -= StartOpenedAnimation;
+    }
+
+    public void StartOpenedAnimation(int id)
+    {
+        if(id == _id)
+            _animator.SetBool(CanBecomeGreen, true);
+    }        
 }

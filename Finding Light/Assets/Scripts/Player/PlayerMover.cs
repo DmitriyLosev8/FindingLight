@@ -9,10 +9,11 @@ public class PlayerMover : MonoBehaviour
     private const string IsRunning = "IsRunning";
     private const string IsClimbing = "IsClimbing";
 
-    [SerializeField] private float _speed = 5f;
+    [SerializeField] private float _speed = 4.5f;
     [SerializeField] private float _rotationSensetivity;
     [SerializeField] private Animator _animator;
     [SerializeField] private GameObject _latern;
+    [SerializeField] private PlayersSounds _playersSounds;
 
     private PlayerInput _playerInput;
     private Vector2 _moveInput;
@@ -75,10 +76,11 @@ public class PlayerMover : MonoBehaviour
                 Quaternion rotationAngle = Quaternion.LookRotation(moveDirection);
                 _rigidbody.rotation = Quaternion.Lerp(transform.rotation, rotationAngle, Time.deltaTime * _rotationSensetivity);
                 _animator.SetBool(IsRunning, true);
-                Vector3 velocity = moveDirection * _speed;
-                _rigidbody.velocity = velocity;
-            }
-            else
-                _animator.SetBool(IsRunning, false); 
-    }
+                _playersSounds.PlayStepSound();
+                 Vector3 velocity = moveDirection * _speed;
+                _rigidbody.velocity = velocity;    
+             }
+             else
+                     _animator.SetBool(IsRunning, false);
+    }      
 }
