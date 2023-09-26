@@ -16,19 +16,23 @@ public class GUISystem : MonoBehaviour
     [SerializeField] private TMP_Text _lightsCount;
     [SerializeField] private LightContainer _lightContainer;
     [SerializeField] private TMP_Text _levels;
+    [SerializeField] private GameObject _joyStick;
 
     private void Start()
     {
         _health.value = _player.Health;
         _oxygen.value = _player.Oxygen;
         _lightsCount.text = _lightContainer.Lights.ToString();
+        
+        if (Application.isMobilePlatform)
+            EnableJoistick();
        // _lightsCount.text = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Light_Orb).ToString();
     }
 
     private void Update()
     {
         _health.value = _player.Health;
-        _levels.text = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Level_Number).ToString();
+       // _levels.text = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Levels_Number).ToString();
     }
 
     private void OnEnable()
@@ -56,6 +60,10 @@ public class GUISystem : MonoBehaviour
     //    _health.value = health;
     //}
 
+    private void EnableJoistick()
+    {
+        _joyStick.SetActive(true);
+    }
     private void OnLightChanged(int lightsOrbs)
     {
         _lightsCount.text = lightsOrbs.ToString();

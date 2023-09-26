@@ -21,22 +21,28 @@ public class PauseMenu : MonoBehaviour
         _pausePanel.SetActive(false);
     }
 
-    public void PauseGame()
+    public void PauseGame(GameObject panel)
     {
         if (_pausePanel != null)
         {
-            _pausePanel.SetActive(true);
-            _joyStick.SetActive(false);  
+            panel.SetActive(true);
+
+            if (Application.isMobilePlatform)
+                _joyStick.SetActive(false);  
+            
             IsPaused = true;
             _music.Pause();
             Time.timeScale = 0;
         }
     }
 
-    public void ResumeGame()
+    public void ResumeGame(GameObject panel)
     {
-        _pausePanel.SetActive(false);
-        _joyStick.SetActive(true);
+        panel.SetActive(false);
+
+        if (Application.isMobilePlatform)
+            _joyStick.SetActive(true);
+
         IsPaused = false;
         Time.timeScale = 1;
         Unpaused?.Invoke();

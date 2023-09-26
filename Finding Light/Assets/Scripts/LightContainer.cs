@@ -9,7 +9,7 @@ public class LightContainer : MonoBehaviour
 {
     private int _lights;
     private int _startLights = 0;
-    private string _loghtOrbs = "light orbs";
+   // private string _loghtOrbs = "light orbs";
 
     public int Lights => _lights;
 
@@ -21,7 +21,12 @@ public class LightContainer : MonoBehaviour
         if (Agava.YandexGames.PlayerPrefs.HasKey(KeySave.Light_Orb))
             _lights = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Light_Orb);
         else
-            Debug.Log("Бан");
+        {
+            _lights = _startLights;
+            Agava.YandexGames.PlayerPrefs.SetInt(KeySave.Light_Orb, _lights);
+            Debug.Log("колво доступных шаров из старта - " + Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Light_Orb));
+        }
+            
 
 
         //if (UnityEngine.PlayerPrefs.HasKey(KeySave.Light_Orb))
@@ -34,7 +39,7 @@ public class LightContainer : MonoBehaviour
 
 
         LightChanged?.Invoke(_lights);
-        Debug.Log("Вот сколько шаров на старте -  " + _lights);
+       // Debug.Log("Вот сколько шаров на старте -  " + _lights);
     }
 
     //private void Awake()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,13 +21,18 @@ public class SceneSwitcher : MonoBehaviour
 
     {
         LevelChanger.LevelChangedToNext += OnLevelChangedToNext;
+       // NewLevelZone.NewLevelOpened += OnNewLevelOpened;
         PauseMenu.LoadMainMenuButtonClicked += LoadMainMenu;
         Player.Died += OnPlayerDied;
         LevelButton.Clicked += OnLevelButtonClicked;
     }
+
+
+
     private void OnDisable()
     {
         LevelChanger.LevelChangedToNext -= OnLevelChangedToNext;
+       // NewLevelZone.NewLevelOpened -= OnNewLevelOpened;
         PauseMenu.LoadMainMenuButtonClicked -= LoadMainMenu;
         Player.Died -= OnPlayerDied;
         LevelButton.Clicked -= OnLevelButtonClicked;
@@ -70,6 +76,7 @@ public class SceneSwitcher : MonoBehaviour
         if (_sceneToLoad != 0)
             _sceneToLoad = 0;
 
+        _levelSave.SetCountOfAvalaibleLevels();
         LoadScene();
     }
 
@@ -81,7 +88,14 @@ public class SceneSwitcher : MonoBehaviour
     private void OnLevelChangedToNext()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        _levelSave.IncreaseLevel();
+
     }
+
+    //private void OnNewLevelOpened()
+    //{
+    //    _levelSave.IncreaseLevel();
+    //}
 
     private void OnPlayerDied()
     {
@@ -99,6 +113,6 @@ public class SceneSwitcher : MonoBehaviour
 
     private void SaveCurrentLevel()
     {
-        Agava.YandexGames.PlayerPrefs.SetInt(KeySave.Level_Number, SceneManager.GetActiveScene().buildIndex);
+        Agava.YandexGames.PlayerPrefs.SetInt(KeySave.Levels_Number, SceneManager.GetActiveScene().buildIndex);
     }
 }

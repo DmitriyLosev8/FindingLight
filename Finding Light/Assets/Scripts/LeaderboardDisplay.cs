@@ -11,7 +11,7 @@ namespace Agava.YandexGames.Samples
 {
     public class LeaderboardDisplay : MonoBehaviour
     {
-        [SerializeField] private TMP_Text _payerScore;
+       // [SerializeField] private TMP_Text _playersLights;
         [SerializeField] private TMP_Text _authorizationStatusText;
         [SerializeField] private TMP_Text _personalProfileDataPermissionStatusText;
         [SerializeField] private TMP_Text[] _ranks;
@@ -20,6 +20,7 @@ namespace Agava.YandexGames.Samples
         [SerializeField] private LightContainer _lightContainer;
         [SerializeField] private string _leaderBoardName = "Leaderboard";
         [SerializeField] private InputField _cloudSaveDataInputField;
+       
 
         private int _countOfLights;
         private readonly string _anonimus = "Anonimus";
@@ -27,7 +28,8 @@ namespace Agava.YandexGames.Samples
         private void Awake()
         {
             YandexGamesSdk.CallbackLogging = true;
-            _countOfLights = (int)_lightContainer.Lights;
+            _countOfLights = _lightContainer.Lights;
+            //SetLeaderboardScore();
 
             // StartCoroutine(Start());
             gameObject.SetActive(false);
@@ -36,7 +38,8 @@ namespace Agava.YandexGames.Samples
 
         public void OpenLeaderboard()
         {
-            //  StartCoroutine(Start());
+          //  StartCoroutine(Start());
+            SetLeaderboardScore();
 
             Leaderboard.GetEntries(_leaderBoardName, result =>
             {

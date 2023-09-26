@@ -12,6 +12,7 @@ public class LeaderbordButton : MonoBehaviour
     [SerializeField] private Button _closeButton;
     [SerializeField] private LeaderboardDisplay _leaderbordDisplay;
     [SerializeField] private LightContainer _lightCounter;
+    [SerializeField] private PauseMenu _pauseMenu;
 
     private void OnEnable()
     {
@@ -30,12 +31,17 @@ public class LeaderbordButton : MonoBehaviour
         if (_leaderbordDisplay.gameObject.activeSelf)
             Hide();
         else
+        {
+            _pauseMenu.PauseGame(_leaderbordDisplay.gameObject);
             Show();
+        }
+            
     }
 
     private void OnCloseButtonClick()
     {
-
+        _leaderbordDisplay.gameObject.SetActive(false);
+        _pauseMenu.ResumeGame(_leaderbordDisplay.gameObject);
     }
 
     private void Hide()
