@@ -10,7 +10,6 @@ public class Enemy : MonoBehaviour
     private float _healthDamage;
     private float _oxygenDamage;
     private float _lightDamage;
-
     private int _sendingDamage;
 
     private void Start()
@@ -18,16 +17,11 @@ public class Enemy : MonoBehaviour
         ChoseRandomDamage();
     }
 
-    private void Update()
-    {
-        SetValueOfDamage();
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.TryGetComponent(out Player player))
         {
-           // SetValueOfDamage(player.Level);
+            SetValueOfDamage(player.Level);
 
             switch (_sendingDamage)
             {
@@ -50,28 +44,28 @@ public class Enemy : MonoBehaviour
         _sendingDamage = Random.Range(0, countOfDamages);
     }
 
-    private void SetValueOfDamage()
+    private void SetValueOfDamage(int level)
     {
-        int lowDamage = 3;
-        int middleDamage = 5;
-        int highDamage = 8;
+        int lowDamage = 5;
+        int middleDamage = 8;
+        int highDamage = 11;
         int scullPanelDamage = 150;
            
-        if (SceneManager.GetActiveScene().buildIndex == 1)
+        if (level == 1 || level == 2)
         {
             _healthDamage = lowDamage;
             _oxygenDamage = lowDamage;
             _lightDamage = lowDamage;
         }
 
-        if (SceneManager.GetActiveScene().buildIndex == 3)
+        if (level == 3 || level == 4 || level == 5)
         {
             _healthDamage = middleDamage;
             _oxygenDamage = middleDamage;
             _lightDamage = middleDamage;
         }
 
-        if (SceneManager.GetActiveScene().buildIndex == 6)
+        if (level >= 6)
         {
             _healthDamage = highDamage;
             _oxygenDamage = highDamage;

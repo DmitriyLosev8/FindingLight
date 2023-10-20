@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5946761203925630615}
   - component: {fileID: 8458838202191399517}
   - component: {fileID: 1182501196824853197}
+  - component: {fileID: -1662601001842086702}
   m_Layer: 0
   m_Name: floor_tiles_LOW
   m_TagString: Untagged
@@ -85,6 +86,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &1182501196824853197
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7954246408602708872}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 2530447010862014847, guid: cabe7824cdfb8f64fad2581d16d5e9be, type: 3}
+--- !u!64 &-1662601001842086702
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

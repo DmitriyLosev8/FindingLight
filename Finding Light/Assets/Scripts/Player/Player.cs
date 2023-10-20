@@ -18,14 +18,16 @@ public class Player : MonoBehaviour
     private Light _spotLight;
     private float _positionYToSelfDesttoy = -30f;
     private float _oxygenLosingDamage; 
-    private float _healthLosingDamage; 
+    private float _healthLosingDamage;
+    private int _startSpotLightAngle;
     private LightContainer _lightContainer;
-
+    
     public bool IsHaveKey { get; private set; }
     public int DefaultValueOfCurrentKeyId = 100;
     public int CurrentKeyID;
-
+    
     public static event UnityAction Died;
+   
     public event UnityAction<float> HealthChanged;
     public event UnityAction<float> OxygenChanged;
     public event UnityAction OxygenBecomeEmpty;
@@ -36,13 +38,17 @@ public class Player : MonoBehaviour
     
     private void Start()
     {
-        _spotLight = _laternSpotLight.GetComponent<Light>();
+        if (UnityEngine.PlayerPrefs.HasKey(KeySave.Level))
+            Level = UnityEngine.PlayerPrefs.GetInt(KeySave.Level);
+           
         SetEternalDamage();
+        SetStartSpotLightAngle();
     }
 
     private void Awake()
     {
         _lightContainer = GetComponent<LightContainer>();
+        _spotLight = _laternSpotLight.GetComponent<Light>();
     }
 
     private void Update()
@@ -54,28 +60,35 @@ public class Player : MonoBehaviour
         EternalDamagePerTime();   
     }
 
+   
+    private void SetStartSpotLightAngle()
+    {
+            if (UnityEngine.PlayerPrefs.HasKey(KeySave.LaternAngle))
+                _spotLight.spotAngle = UnityEngine.PlayerPrefs.GetInt(KeySave.LaternAngle);    
+    }
+    
     private void SetEternalDamage()
     {
-        float lowOxygenDamage = 0.2f;
-        float lowHealthDamage = 0.05f; ;
-        float middleOxygenDamage = 0.4f;
-        float middleHealthDamage = 0.1f; ;
-        float hightOxygenDamage = 0.7f;
-        float hightHealthDamage = 0.2f; ;
+        float lowOxygenDamage = 0.4f;
+        float lowHealthDamage = 0.1f; ;
+        float middleOxygenDamage = 0.6f;
+        float middleHealthDamage = 0.2f; ;
+        float hightOxygenDamage = 1f;
+        float hightHealthDamage = 0.4f; ;
 
-        if (Level == 1)
+        if (Level == 1 || Level == 2)
         {
             _oxygenLosingDamage = lowOxygenDamage;
             _healthLosingDamage = lowHealthDamage;
         }
 
-        if (Level == 3)
+        if (Level == 3 || Level == 4 || Level == 5)
         {
             _oxygenLosingDamage = middleOxygenDamage;
             _healthLosingDamage = middleHealthDamage;
         }
 
-        if (Level == 6)
+        if (Level >= 6)
         {
             _oxygenLosingDamage = hightOxygenDamage;
             _healthLosingDamage = hightHealthDamage;
@@ -119,7 +132,6 @@ public class Player : MonoBehaviour
 
         if (_oxygen < 0)
             _oxygen = 0;
-
     }
 
     public void TakeLightDamage(float lightDamage)

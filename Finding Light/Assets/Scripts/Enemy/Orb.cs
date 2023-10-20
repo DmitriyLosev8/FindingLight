@@ -16,14 +16,12 @@ public class Orb : MonoBehaviour
     private bool _isDestroyed;
     private AudioSource _audioSource;
 
-
     public bool _isSpoted = false;
 
     private void Start()
     {
         _audioSource = GetComponent<AudioSource>();
     }
-
 
     private void Update()
     {
@@ -44,17 +42,11 @@ public class Orb : MonoBehaviour
                 player.TakeOxygen(_oxygenValueToGive);
             else
                 player.TakeLight(_lightValueToGive);  
-            //_isCollected?.Invoke();
+           
             _isDestroyed = true;
             PlayCollectedSound();
             Destroy(gameObject);
-            //player.CollectLightOrb();
         }      
-    }
-
-    public void DeterminePlayer(Player player)
-    {
-        _player = player;  
     }
 
     private void DetermineTargetPosition()
@@ -63,12 +55,16 @@ public class Orb : MonoBehaviour
         _targetPosition = new Vector3(_player.transform.position.x, _player.transform.position.y + offsetY, _player.transform.position.z); 
     }
 
-
-
     private void PlayCollectedSound()
     {
         float volume = 0.4f;
+        
         if (_isDestroyed)
             AudioSource.PlayClipAtPoint(_audioSource.clip, transform.position, volume);
+    }
+
+    public void DeterminePlayer(Player player)
+    {
+        _player = player;
     }
 }

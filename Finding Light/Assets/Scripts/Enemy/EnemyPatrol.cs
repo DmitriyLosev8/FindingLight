@@ -13,6 +13,7 @@ public class EnemyPatrol : MonoBehaviour
     private void OnEnable()
     {
         DetermineRandomPoint();
+        SetRandomSpeed();
         transform.position = _points.Points[_randomIndexOfPoint].position;
         StartCoroutine(WaitForReachTargetPoint());
     }
@@ -37,7 +38,12 @@ public class EnemyPatrol : MonoBehaviour
             yield return new WaitUntil(() => transform.position == _targetPosition);
         }      
     }
-
+    private void SetRandomSpeed()
+    {
+        float minSpeed = 6;
+        float maxSpeed = 12;
+        _speed = Random.Range(minSpeed, maxSpeed);
+    }
     private void Move()
     {
         if (transform.position != _targetPosition)

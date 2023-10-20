@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1414339515905598430}
   - component: {fileID: 3766215462389094164}
   - component: {fileID: 1767417103966761671}
+  - component: {fileID: 7783885687393314855}
   m_Layer: 0
   m_Name: floor_decoration_B_LOW
   m_TagString: Untagged
@@ -86,6 +87,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &1767417103966761671
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3406046719595951809}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -5643306232227204045, guid: 22d282a550dd4c94c9ee79a6a889ee3e, type: 3}
+--- !u!64 &7783885687393314855
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

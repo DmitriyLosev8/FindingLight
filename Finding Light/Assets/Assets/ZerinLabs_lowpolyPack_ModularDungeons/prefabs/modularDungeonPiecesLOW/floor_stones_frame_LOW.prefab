@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4147075796318726245}
   - component: {fileID: 2191467682667322543}
   - component: {fileID: 3639679747944139550}
+  - component: {fileID: -4759761593505363177}
   m_Layer: 0
   m_Name: floor_stones_frame_LOW
   m_TagString: Untagged
@@ -86,6 +87,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &3639679747944139550
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 389935541770911098}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 8582649033596509718, guid: 4d8645cd1b8830b48a79032bf091f86b, type: 3}
+--- !u!64 &-4759761593505363177
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

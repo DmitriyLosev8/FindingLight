@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4599416474205286029}
   - component: {fileID: 1743068582331619911}
   - component: {fileID: -5257543582821595894}
+  - component: {fileID: -7067927021768468459}
   m_Layer: 0
   m_Name: floor_button_skull_A_LOW
   m_TagString: Untagged
@@ -86,6 +87,20 @@ MeshRenderer:
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!64 &-5257543582821595894
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 229793342167890834}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -8545037100130967850, guid: 9d5e299a6f4ec404ab4d0025838005b9, type: 3}
+--- !u!64 &-7067927021768468459
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

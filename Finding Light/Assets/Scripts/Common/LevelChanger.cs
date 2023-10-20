@@ -5,11 +5,10 @@ using UnityEngine.Events;
 
 public class LevelChanger : MonoBehaviour
 {
-    public static event UnityAction LevelChangedToNext;
+    public static event UnityAction LevelEnded;
 
-    private void OnTriggerEnter(Collider collision)
+    public void EndLevel()
     {
-        if (collision.gameObject.TryGetComponent(out Player player))
-            LevelChangedToNext?.Invoke();
+        LevelEnded?.Invoke();
     }
 }

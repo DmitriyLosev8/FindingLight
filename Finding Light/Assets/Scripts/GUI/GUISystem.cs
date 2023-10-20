@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
+using Agava.WebUtility;
 
 public class GUISystem : MonoBehaviour
 {
@@ -15,8 +16,10 @@ public class GUISystem : MonoBehaviour
     [SerializeField] private Toggle _musicToggle;
     [SerializeField] private TMP_Text _lightsCount;
     [SerializeField] private LightContainer _lightContainer;
-    [SerializeField] private TMP_Text _levels;
     [SerializeField] private GameObject _joyStick;
+    [SerializeField] private PauseGame _pauseGame;
+    [SerializeField] private GameObject _nextLevelPanel;
+    [SerializeField] private GameObject _tutorialPanel;
 
     private void Start()
     {
@@ -26,44 +29,49 @@ public class GUISystem : MonoBehaviour
         
         if (Application.isMobilePlatform)
             EnableJoistick();
-       // _lightsCount.text = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Light_Orb).ToString();
+
+        TurnSound();
+    }
+
+    private void OnEnable()
+    {
+       // WebApplication.InBackgroundChangeEvent += OnInBackgroundChange;
+        Application.focusChanged += OnInBackgroundChange;
+        LightContainer.LightChanged += OnLightChanged;
+        _player.OxygenChanged += OnOxygenChanged;
+        _musicToggle.onValueChanged.AddListener(SetMusicValue);
     }
 
     private void Update()
     {
         _health.value = _player.Health;
-       // _levels.text = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Levels_Number).ToString();
     }
-
-    private void OnEnable()
-    {
-        // _player.HealthChanged += OnHealthChanged;
-        LightContainer.LightChanged += OnLightChanged;
-        _player.OxygenChanged += OnOxygenChanged;
-        PauseMenu.Unpaused += OnUnpaused;
-        _musicToggle.onValueChanged.AddListener(TurnSound);
-    }
-
-   
 
     private void OnDisable()
     {
-        // _player.HealthChanged -= OnHealthChanged;
+        Application.focusChanged -= OnInBackgroundChange;
         LightContainer.LightChanged -= OnLightChanged;
         _player.OxygenChanged -= OnOxygenChanged;
-        PauseMenu.Unpaused -= OnUnpaused;
-        _musicToggle.onValueChanged.RemoveListener(TurnSound);
+        _musicToggle.onValueChanged.RemoveListener(SetMusicValue);
     }
 
-    //private void OnHealthChanged(float health)
-    //{
-    //    _health.value = health;
-    //}
+    private void OnLevelEnded()
+    {
+        _nextLevelPanel.SetActive(true);
+        _pauseGame.Pause();
+    }
 
     private void EnableJoistick()
     {
         _joyStick.SetActive(true);
     }
+
+    public void OpenTutorialPanel()
+    {
+        _tutorialPanel.SetActive(true);
+        _pauseGame.Pause();
+    }
+
     private void OnLightChanged(int lightsOrbs)
     {
         _lightsCount.text = lightsOrbs.ToString();
@@ -74,16 +82,54 @@ public class GUISystem : MonoBehaviour
         _oxygen.value = oxygen;
     }
 
-    private void OnUnpaused()
+    private void TurnSound()
     {
-        _music.UnPause();
+        int turnedOn = 1;
+
+        if (UnityEngine.PlayerPrefs.HasKey(KeySave.Music))
+        {
+            if(UnityEngine.PlayerPrefs.GetInt(KeySave.Music) == turnedOn)
+            {
+                _music.Play();
+                _musicToggle.isOn = true;
+            }
+            else
+            {
+                _music.Stop();
+                _musicToggle.isOn = false;
+            }        
+        }
     }
 
-    public void TurnSound(bool isOn)
+    private void OnInBackgroundChange(bool inBackground) 
     {
-        if (isOn)
-            _music.Play();
+        bool isOn;
+
+        if (inBackground)
+            isOn = false;
         else
-            _music.Stop();
+            isOn = true;
+
+        AudioListener.pause = isOn;
+        AudioListener.volume = isOn ? 0f : 1f;
+    }
+
+    public void CloseTutorialPanel()
+    {
+        _tutorialPanel.SetActive(false);
+        _pauseGame.ResumeGame();
+    }
+
+    public void SetMusicValue(bool isOn)
+    {
+        int turnedOn = 1;
+        int turnedOff = 0;
+
+        if (isOn)
+            UnityEngine.PlayerPrefs.SetInt(KeySave.Music, turnedOn);
+        else
+            UnityEngine.PlayerPrefs.SetInt(KeySave.Music, turnedOff);
+
+        TurnSound();
     }
 }

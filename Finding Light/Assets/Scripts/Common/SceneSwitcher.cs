@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
+using Agava.YandexGames.Samples;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
@@ -9,62 +9,49 @@ using UnityEngine.SceneManagement;
 public class SceneSwitcher : MonoBehaviour
 {
     [SerializeField] private LevelSave _levelSave;
-  
+    [SerializeField] private PauseGame _pauseGame;
+    [SerializeField] private GameObject _nextLevelPanel;
+
     private int _sceneToLoad = 1;
+
+    public static UnityAction LevelStarted;
 
     private void Start()
     {
-        SaveCurrentLevel();
+        if (_pauseGame != null)
+            _pauseGame.ResumeGame();
     }
 
     private void OnEnable()
 
     {
-        LevelChanger.LevelChangedToNext += OnLevelChangedToNext;
-       // NewLevelZone.NewLevelOpened += OnNewLevelOpened;
-        PauseMenu.LoadMainMenuButtonClicked += LoadMainMenu;
+        LevelChanger.LevelEnded += OnLevelEnded;
+        NextLevelPanel.NextLevelButtonClicked += OnLevelChangedToNext;
+        TutorialPanel.LoadMainMenuButtonClicked += LoadMainMenu;
         Player.Died += OnPlayerDied;
         LevelButton.Clicked += OnLevelButtonClicked;
     }
 
 
-
     private void OnDisable()
     {
-        LevelChanger.LevelChangedToNext -= OnLevelChangedToNext;
-       // NewLevelZone.NewLevelOpened -= OnNewLevelOpened;
-        PauseMenu.LoadMainMenuButtonClicked -= LoadMainMenu;
+        LevelChanger.LevelEnded -= OnLevelEnded;
+        NextLevelPanel.NextLevelButtonClicked -= OnLevelChangedToNext;
+        TutorialPanel.LoadMainMenuButtonClicked -= LoadMainMenu;
         Player.Died -= OnPlayerDied;
         LevelButton.Clicked -= OnLevelButtonClicked;
     }
 
-    private void OnLevelButtonClicked(int levelButtonId)
+    private void OnLevelEnded()
     {
-
-        for(int i = 0; i < _levelSave.AvailableLevels.Count; i++)
-        {
-            Debug.Log("Доступные уровни из кнопки - " + _levelSave.AvailableLevels[i] + " ");
-            
-            if (levelButtonId == _levelSave.AvailableLevels[i])
-            {
-                _sceneToLoad = levelButtonId;
-                LoadScene();
-
-            }
-           else
-                Debug.Log("ади не подходят, вот йади кнопки - " + levelButtonId + " вот доступный уровень - " + _levelSave.AvailableLevels[i]);
-        }   
+        _nextLevelPanel.SetActive(true);
+        _pauseGame.Pause();
     }
 
     private void LoadScene()
     {
         SceneManager.LoadScene(_sceneToLoad); 
     }
-
-    //private void OnPlayButtonClicked()
-    //{
-    //    _levelsPanel.SetActive(true);
-    //}
 
     private void OnExitButtonClicked()
     {
@@ -88,31 +75,36 @@ public class SceneSwitcher : MonoBehaviour
     private void OnLevelChangedToNext()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-        _levelSave.IncreaseLevel();
-
+        _nextLevelPanel.SetActive(false);
+        _levelSave.IncreaseLevel();   
     }
-
-    //private void OnNewLevelOpened()
-    //{
-    //    _levelSave.IncreaseLevel();
-    //}
 
     private void OnPlayerDied()
     {
-        StartCoroutine(AnimationOfDying());
-        
-    }
-
-    private IEnumerator AnimationOfDying()
-    {
-        float delay = 0.5f;
-        yield return new WaitForSeconds(delay);
-        LoadCurrenScene();
-       // LoadMainMenu();
+        StartCoroutine(WaitOfPlayersDying()); 
     }
 
     private void SaveCurrentLevel()
     {
-        Agava.YandexGames.PlayerPrefs.SetInt(KeySave.Levels_Number, SceneManager.GetActiveScene().buildIndex);
+        UnityEngine.PlayerPrefs.SetInt(KeySave.Level, SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void OnLevelButtonClicked(int levelButtonId)
+    {
+        for (int i = 0; i < _levelSave.AvailableLevels.Count; i++)
+        {
+            if (levelButtonId == _levelSave.AvailableLevels[i])
+            {
+                _sceneToLoad = levelButtonId;
+                LoadScene();
+            }
+        }
+    }
+
+    private IEnumerator WaitOfPlayersDying()
+    {
+        float delay = 0.5f;
+        yield return new WaitForSeconds(delay);
+        LoadCurrenScene();
     }
 }

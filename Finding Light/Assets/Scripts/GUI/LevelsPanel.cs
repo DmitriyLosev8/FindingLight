@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class LevelsPanel : MonoBehaviour
 {
     [SerializeField] private List<LevelButton> _levelButtons;
-    [SerializeField] private LevelSave _levelSave;
 
     private int _openedLevels;
 
@@ -15,14 +14,13 @@ public class LevelsPanel : MonoBehaviour
         Paint();
     }
 
-
     private void Paint()
     {
         int mainMenu = 1;
 
-        if (Agava.YandexGames.PlayerPrefs.HasKey(KeySave.Level))
+        if (UnityEngine.PlayerPrefs.HasKey(KeySave.Level))
         {
-            _openedLevels = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Level);  
+            _openedLevels = UnityEngine.PlayerPrefs.GetInt(KeySave.Level);  
         }
             
        for(int i = 0; i < _openedLevels - mainMenu; i++)
