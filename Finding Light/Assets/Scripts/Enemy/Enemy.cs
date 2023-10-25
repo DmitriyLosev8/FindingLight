@@ -46,9 +46,9 @@ public class Enemy : MonoBehaviour
 
     private void SetValueOfDamage(int level)
     {
-        int lowDamage = 5;
-        int middleDamage = 8;
-        int highDamage = 11;
+        int lowDamage = 4;
+        int middleDamage = 7;
+        int highDamage = 10;
         int scullPanelDamage = 150;
            
         if (level == 1 || level == 2)

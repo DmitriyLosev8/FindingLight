@@ -45,7 +45,6 @@ public class LevelSave : MonoBehaviour
         {
             _countOfAvailableLevels = _startLevel;
             UnityEngine.PlayerPrefs.SetInt(KeySave.Level, _countOfAvailableLevels);
-           // Agava.YandexGames.PlayerPrefs.Save();
         }
     }
 

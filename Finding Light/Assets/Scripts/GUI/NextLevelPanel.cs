@@ -41,7 +41,7 @@ public class NextLevelPanel : MonoBehaviour
 
     private void ShowLightOrbsCount()
     {
-        if (Agava.YandexGames.PlayerPrefs.HasKey(KeySave.Light_Orb))
-            _lightsCount.text = Agava.YandexGames.PlayerPrefs.GetInt(KeySave.Light_Orb).ToString();
+        if (UnityEngine.PlayerPrefs.HasKey(KeySave.Light_Orb))
+            _lightsCount.text = UnityEngine.PlayerPrefs.GetInt(KeySave.Light_Orb).ToString();
     }
 }

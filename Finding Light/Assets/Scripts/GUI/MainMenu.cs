@@ -12,7 +12,6 @@ public class MainMenu : MonoBehaviour
 
     public static event UnityAction PlayButtonClicked;
 
-
     private void OnEnable()
     {
         Application.focusChanged += OnInBackgroundChange;

@@ -9833,7 +9833,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: afbc7ca954304324aa0e545034e36963, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _oxygenValueToGive: 10
+  _oxygenValueToGive: 15
   _lightValueToGive: 0
   _isOxygen: 1
   _isSpoted: 0

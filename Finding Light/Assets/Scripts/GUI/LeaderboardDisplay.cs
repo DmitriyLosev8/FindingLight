@@ -17,9 +17,9 @@ namespace Agava.YandexGames.Samples
         [SerializeField] private LightContainer _lightContainer;
         [SerializeField] private string _leaderBoardName = "Leaderboard";
         [SerializeField] private InputField _cloudSaveDataInputField;
+        [SerializeField] private TMP_Text _anonimus;
 
         private int _countOfLights;
-        private readonly string _anonimus = "Anonimus";
 
         private void Awake()
         {
@@ -69,7 +69,7 @@ namespace Agava.YandexGames.Samples
 
                     if (string.IsNullOrEmpty(name))
                     {
-                        name = _anonimus;
+                        name = _anonimus.text;
                     }
 
                     _leaderNames[i].text = name;
@@ -80,7 +80,6 @@ namespace Agava.YandexGames.Samples
 
             error =>
             {
-
             });
         }
 

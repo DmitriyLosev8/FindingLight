@@ -52,6 +52,5 @@ public class LightContainer : MonoBehaviour
     {
         _lights -= light;
         LightChanged?.Invoke(_lights);
-        //Agava.YandexGames.PlayerPrefs.SetInt(KeySave.Light_Orb, _lights);
     }
 }

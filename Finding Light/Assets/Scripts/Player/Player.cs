@@ -30,7 +30,6 @@ public class Player : MonoBehaviour
    
     public event UnityAction<float> HealthChanged;
     public event UnityAction<float> OxygenChanged;
-    public event UnityAction OxygenBecomeEmpty;
 
     public int Level { get; private set; }
     public float Health => _health;
@@ -202,9 +201,12 @@ public class Player : MonoBehaviour
 
     private void Die()
     {
-        Instantiate(_effectOfDying, transform.position, Quaternion.identity);
-        Died?.Invoke();
-        Destroy(gameObject);
+        if(_health <= 0)
+        {
+            Instantiate(_effectOfDying, transform.position, Quaternion.identity);
+            Died?.Invoke();
+            Destroy(gameObject);
+        }
     }
 
     private void EternalDamagePerTime()
@@ -222,6 +224,7 @@ public class Player : MonoBehaviour
     {
         _health -= _healthLosingDamage * Time.deltaTime;
         HealthChanged?.Invoke(_health);
+        Die();
     }
 
     private void OxygenLosing()
